@@ -1,17 +1,52 @@
-/* Error: Expected expression.
- *    ,
- * 34 |     height: 
- *    |             ^
- *    '
- *   style/main.scss 34:10  root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Expected expression.\a    \2577 \a 34 \2502      height: \a    \2502              ^\a    \2575 \a   style/main.scss 34:10  root stylesheet";
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
+  background-color: grey;
 }
+
+html {
+  font-size: 10px;
+}
+
+#background {
+  height: 100vh;
+  width: 1440px;
+  margin: 0 auto;
+  background: darkgrey;
+}
+
+#mirror {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 90%;
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#mirrorworld {
+  height: 100%;
+  width: 100%;
+}
+
+button {
+  width: 10rem;
+  height: 4rem;
+  margin: 3rem;
+  background-color: black;
+  color: white;
+}
+
+button:hover {
+  color: black;
+  background-color: white;
+}
+
+/*# sourceMappingURL=style.css.map */
