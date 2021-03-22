@@ -26,8 +26,8 @@ const powerStat = document.getElementById('power-stat');
 const shieldingStat = document.getElementById('shielding-stat');
 
 /// MINI GAME VARS ///
-const miniGameBkg = document.getElementById('minigame-modal');
-const miniGame = document.getElementById('minigame-window');
+const modalBkg = document.getElementById('modal-bkg');
+const miniGameWindow = document.getElementById('minigame-window');
 const knowledgeMiniGameDiv = document.getElementById('knowledge-minigame');
 const miniGameSubmit = document.getElementById('minigame-submit');
 const miniGameNext = document.getElementById('minigame-next');
@@ -218,6 +218,12 @@ function randomNumberRange(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
   }  
 function knowledgeMiniGame() {	
+	// setup the DOM
+	modalBkg.style.backgroundColor = 'rgba(17, 0, 71, 0.678)'
+	modalBkg.classList.toggle('hidden');
+	miniGameWindow.classList.toggle('hidden')
+
+	
 	const questions = [...triviaQuestions]
 	const answers = [...triviaAnswers]
 	
@@ -307,6 +313,7 @@ function knowledgeMiniGame() {
 	}
 }
 
+// knowledgeMiniGame()
 
 function weaponUpgrade() {
 	console.log('weapon upgrade began')
@@ -468,9 +475,6 @@ function rollGame() {
 
 		case 20:	console.log('case 20 started')
 					dialogueDiv.innerHTML = ''
-					miniGameBkg.style.backgroundColor = 'rgba(17, 0, 71, 0.678)'
-					miniGameBkg.classList.toggle('hidden');
-					knowledgeMiniGameDiv.classList.toggle('hidden')
 					knowledgeMiniGame();
 					break;
 

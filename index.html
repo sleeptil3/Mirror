@@ -45,27 +45,28 @@
             <button id="opening-modal-button">Next</button>
         </div>
     </section>
-    <section class="hidden" id="minigame-modal">
-        <div class="center" id="minigame-window">
-            <div class="hidden center" id="knowledge-minigame">
-                <div class="center" id="minigame-controls">
-                    <p id="text-warning">Type <strong>ONLY</strong> the single word answer. Do not type any articles like 'the' 'a' or 'some'!</p>
-                    <input type="text" class="center" id="minigame-input">
-                    <button id="minigame-submit">Submit</button>
-                    <button class="hidden" id="minigame-next">Next Question</button>
-                </div>
-            </div>
-            <div class="center hidden flex-container" id="weapon-upgrade-div">
-                <h1>Choose your Upgrade:</h1>
-                <h2>You will receive an enhancement of 5 for each token</h2>
-                <h3>You currently have <span id="upgrade-token-count"></span> tokens.</h3>
-                <div class="flex-container" id="weapon-upgrade-buttons">
-                    <button id="accuracy-button">ACCURACY</button>
-                    <button id="power-button">POWER</button>
-                    <button id="shielding-button">SHIELDING</button>
-                </div>
+    <div class="" id="modal-bkg">
+    </div>
+    <section class="hidden center" id="minigame-window">
+        <div class="center" id="knowledge-minigame">
+            <div class="center" id="minigame-controls">
+                <p id="text-warning">Type <strong>ONLY</strong> the single word answer. Do not type any articles like 'the' 'a' or 'some'!</p>
+                <input type="text" class="center" id="minigame-input">
+                <button id="minigame-submit">Submit</button>
+                <button class="hidden" id="minigame-next">Next Question</button>
             </div>
         </div>
+    </section>
+    <section class="center hidden flex-container" id="weapon-upgrade-modal">
+        <div class="center flex-container" id="weapon-upgrade-div">
+            <h1>Choose your Upgrade:</h1>
+            <h2>You will receive an enhancement of 5 for each token</h2>
+            <h3>You currently have <span id="upgrade-token-count"></span> tokens.</h3>
+            <div class="flex-container" id="weapon-upgrade-buttons">
+                <button id="accuracy-button">ACCURACY</button>
+                <button id="power-button">POWER</button>
+                <button id="shielding-button">SHIELDING</button>
+            </div>
     </section>
 </body>
 </html>

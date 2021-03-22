@@ -165,74 +165,73 @@ button:hover {
 	color: black;
 	background-color: white;
 }
-#minigame-modal {
+#modal-bkg {
 	position: absolute;
 	z-index: 500;
 	height: 100vh;
 	width: 100vw;
 	background-color: rgba(17, 0, 71, 0.678);
 	backdrop-filter: blur(15px);
-	
-	#minigame-window {
-		width: 800px;
-		height: 500px;
-		border: 8px solid black;
-		background: $backgrounds;
-		z-index: 501;
+}
+#minigame-window {
+	width: 800px;
+	height: 500px;
+	border: 8px solid black;
+	background: $backgrounds;
+	z-index: 501;
+	text-align: center;
+	h1 {
+		font-size: 4rem;
+	}
+	h2 {
+		font-size: 3rem;
+	}
+	h3 {
+		font-size: 2rem;
+	}
+	p {
+		font-size: 1.4rem;
+		position: absolute;
+		left: 50px;
+		top: 110px;
+	}
+	#knowledge-minigame {
+		width: 100%;
 		text-align: center;
-		h1 {
-			font-size: 4rem;
-		}
-		h2 {
-			font-size: 3rem;
-		}
-		h3 {
-			font-size: 2rem;
-		}
-		p {
-			font-size: 1.4rem;
-			position: absolute;
-			left: 50px;
-			top: 110px;
-		}
-		#knowledge-minigame {
-			width: 100%;
-			text-align: center;
 
-			#minigame-controls {
-				width: 100%;
-				#minigame-input {
-					height: 4rem;
-					font-size: 2rem;
-					transform: translate(-50%, 250%);
-				}
-				#minigame-submit {
-					transform: translate(0, 430%);
-				}
-				#minigame-next {
-					position: absolute;
-					top: 200px;
-					right: 0;
-				}
+		#minigame-controls {
+			width: 100%;
+			#minigame-input {
+				height: 4rem;
+				font-size: 2rem;
+				transform: translate(-50%, 250%);
+			}
+			#minigame-submit {
+				transform: translate(0, 430%);
+			}
+			#minigame-next {
+				position: absolute;
+				top: 200px;
+				right: 0;
 			}
 		}
-		#weapon-upgrade-div {
-			width: 100%;
-			height: 100%;
-			flex-direction: column;
-			justify-content: space-around;
-			align-items: center;
-			#weapon-upgrade-buttons {
-				#accuracy-button {
-	
-				}
-				#power-button {
-	
-				}
-				#shielding-button {
-					
-				}
-			}
+	}
+}
+#weapon-upgrade-div {
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	#weapon-upgrade-buttons {
+		#accuracy-button {
+
+		}
+		#power-button {
+
+		}
+		#shielding-button {
+			
 		}
 	}
 }
