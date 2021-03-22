@@ -1,39 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes skew-in {
+  from {
+    transform: translateX(0) skewX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-60px) skewX(40deg);
+    opacity: 0.6;
+  }
+}
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border: 1px solid black;
-  background-color: grey;
+}
+
+.flex-container {
+  display: flex;
 }
 
 html {
   font-size: 10px;
 }
 
-#background {
+#onload {
+  background: black;
+  position: fixed;
+  width: 100vw;
   height: 100vh;
-  width: 1440px;
+  opacity: 0.9;
+  backdrop-filter: blur(20px);
+  z-index: 100;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: opacity 4s ease-out;
+}
+#onload #title {
+  position: relative;
+  font-family: "Oswald", sans-serif;
+  font-size: 15rem;
+  color: white;
+  z-index: 95;
+  animation: fade-in 3s ease-in;
+}
+#onload #reflection {
+  position: absolute;
+  bottom: 439px;
+  font-family: "Oswald", sans-serif;
+  font-size: 15rem;
+  color: #939393;
+  z-index: 90;
+  animation: skew-in 6s linear;
+  animation-fill-mode: forwards;
+}
+#onload button {
+  position: relative;
+  top: 100px;
+  background-color: black;
+  color: white;
+  animation: fade-in 3s ease-in;
+}
+#onload button:hover {
+  opacity: 1;
+  color: black;
+  background-color: white;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  border: 3px solid black;
   margin: 0 auto;
-  background: darkgrey;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+body img {
+  height: 100vh;
+  position: relative;
+  z-index: 0;
+}
+
+#opening-modal {
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: fixed;
+  width: 700px;
+  height: 400px;
+  border: 8px solid black;
+  background: white;
+  z-index: 50;
+}
+#opening-modal #opening-modal-div {
+  width: 100%;
+  margin: 2rem;
+}
+#opening-modal #opening-modal-div h2 {
+  font-size: 2rem;
+}
+#opening-modal #opening-controls {
+  width: 100%;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 #mirror {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 800px;
   height: 90%;
-  font-size: 1.4rem;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  border: 14px solid black;
+  background-color: white;
 }
 
 #mirrorworld {
   height: 100%;
   width: 100%;
+}
+#mirrorworld #narrator-div {
+  margin: 2rem;
+}
+#mirrorworld #dialogue-div {
+  margin: 2rem;
+}
+#mirrorworld #decision-div {
+  margin: 2rem;
+}
+#mirrorworld #character {
+  width: 175px;
+  height: auto;
 }
 
 button {
@@ -47,6 +162,90 @@ button {
 button:hover {
   color: black;
   background-color: white;
+}
+
+#minigame-modal {
+  position: absolute;
+  z-index: 500;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(17, 0, 71, 0.678);
+  backdrop-filter: blur(15px);
+}
+#minigame-modal #minigame-window {
+  width: 800px;
+  height: 500px;
+  border: 8px solid black;
+  background: white;
+  z-index: 501;
+  text-align: center;
+}
+#minigame-modal #minigame-window h1 {
+  font-size: 4rem;
+}
+#minigame-modal #minigame-window h2 {
+  font-size: 3rem;
+}
+#minigame-modal #minigame-window h3 {
+  font-size: 2rem;
+}
+#minigame-modal #minigame-window p {
+  font-size: 1.4rem;
+  position: absolute;
+  left: 50px;
+  top: 110px;
+}
+#minigame-modal #minigame-window #knowledge-minigame {
+  width: 100%;
+  text-align: center;
+}
+#minigame-modal #minigame-window #knowledge-minigame #minigame-controls {
+  width: 100%;
+}
+#minigame-modal #minigame-window #knowledge-minigame #minigame-controls #minigame-input {
+  height: 4rem;
+  font-size: 2rem;
+  transform: translate(-50%, 250%);
+}
+#minigame-modal #minigame-window #knowledge-minigame #minigame-controls #minigame-submit {
+  transform: translate(0, 430%);
+}
+#minigame-modal #minigame-window #knowledge-minigame #minigame-controls #minigame-next {
+  position: absolute;
+  top: 200px;
+  right: 0;
+}
+#minigame-modal #minigame-window #weapon-upgrade-div {
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.hidden {
+  display: none;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fade-in {
+  animation: fade-in 1s;
+  animation-fill-mode: forwards;
+}
+
+.fade-out {
+  animation: fade-out 1s;
+  animation-fill-mode: forwards;
+}
+
+.fade-out-intro {
+  animation: fade-out 4s;
+  animation-fill-mode: forwards;
 }
 
 /*# sourceMappingURL=style.css.map */

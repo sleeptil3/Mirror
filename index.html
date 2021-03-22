@@ -8,26 +8,64 @@
     <script defer src="script/script.js"></script>
     <title>MIRROR</title>
 </head>
-<body id="set">BACKGROUND
-   <main id="mirror">MIRROR
-       <section class="grid-container" id="mirrorworld">MIRROR-WORLD
-            <div id="narrator-div">
-                NARRATOR
-            </div>
-            <div id="dialogue-div">
-                DIALOGUE
-            </div>
-            <div id="decision-div">
-                DECISION<br />
+<body class="set flex-container" >
+    <img id="set-img" src="" alt="">
+    <div class="flex-container" id="onload">
+        <h1 id="title">MIRROR</h1>
+        <h1 id="reflection">MIRROR</h1>
+        <button id="play">PLAY</button>
+    </div>
+    <main class="flex-container center hidden" id="mirror">
+        <section class="grid-container" id="mirrorworld">
+            <div id="narrator-div"></div>
+            <div id="dialogue-div"></div>
+            <div class="hidden" id="decision-div">
+                <br />
                 <button id="yes">Yes</button>
                 <button id="no">No</button>
             </div>
-            <div id="stats-div">
-                STATS
+            <div class="hidden" id="stats-div">
+                <p>STATS</p>
+                <p>Sanity: <span id="sanity-stat"></span></p>
+                <p>Accuracy: <span id="accuracy-stat"></span></p>
+                <p>Power:  <span id="power-stat"></span></p>
+                <p>Shielding: <span id="shielding-stat"></span></p>
             </div>
-            <div id="character-div">CHARACTER</div>
-       </section>
-       <section id="modal"></section>
-   </main>
+            <div id="character-div">
+                <img src="" alt="" class="hidden" id="character">
+            </div>
+            <div>
+                <button id="advance-button">Advance</button>
+            </div>
+        </section>
+    </main>
+    <section id="opening-modal" class="flex-container">
+        <div id="opening-modal-div"></div>
+        <div id="opening-controls" class="flex-container">
+            <button id="opening-modal-button">Next</button>
+        </div>
+    </section>
+    <section class="hidden" id="minigame-modal">
+        <div class="center" id="minigame-window">
+            <div class="hidden center" id="knowledge-minigame">
+                <div class="center" id="minigame-controls">
+                    <p id="text-warning">Type <strong>ONLY</strong> the single word answer. Do not type any articles like 'the' 'a' or 'some'!</p>
+                    <input type="text" class="center" id="minigame-input">
+                    <button id="minigame-submit">Submit</button>
+                    <button class="hidden" id="minigame-next">Next Question</button>
+                </div>
+            </div>
+            <div class="center hidden flex-container" id="weapon-upgrade-div">
+                <h1>Choose your Upgrade:</h1>
+                <h2>You will receive an enhancement of 5 for each token</h2>
+                <h3>You currently have <span id="upgrade-token-count"></span> tokens.</h3>
+                <div class="flex-container" id="weapon-upgrade-buttons">
+                    <button id="accuracy-button">ACCURACY</button>
+                    <button id="power-button">POWER</button>
+                    <button id="shielding-button">SHIELDING</button>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
