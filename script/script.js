@@ -3,10 +3,12 @@
 /////////////////////////
 
 /// MAIN PAGE VARS ///
-const onloadDiv = document.getElementById('onload');
+const introDiv = document.getElementById('intro');
+
 const setImg = document.getElementById('set-img');
 const openingModalDiv = document.getElementById('opening-modal-div');
 const openingModalButton = document.getElementById('opening-modal-button');
+
 const mirrorMain = document.getElementById('mirror');
 const mirrorWorldSection = document.getElementById('mirrorworld');
 const narratorDiv = document.getElementById('narrator-div');
@@ -27,21 +29,17 @@ const shieldingStat = document.getElementById('shielding-stat');
 
 /// MINI GAME VARS ///
 const modalBkg = document.getElementById('modal-bkg');
-const miniGameWindow = document.getElementById('minigame-window');
-const knowledgeMiniGameDiv = document.getElementById('knowledge-minigame');
-const miniGameSubmit = document.getElementById('minigame-submit');
-const miniGameNext = document.getElementById('minigame-next');
-const miniGameInput = document.getElementById('minigame-input');
-const miniGameControls = document.getElementById('minigame-controls');
-const h1 = document.createElement('h1');
-const h2 = document.createElement('h2');
-const h3 = document.createElement('h3');
-const p = document.createElement('p');
-const textWarningP = document.getElementById('text-warning')
-miniGameControls.insertBefore(h1, textWarningP);
-miniGameControls.insertBefore(h2, textWarningP);
-miniGameControls.insertBefore(h3, textWarningP);
-miniGameControls.insertBefore(p, textWarningP);
+const minigameWindow = document.getElementById('minigame-window');
+const minigameKnowledge = document.getElementById('minigame-knowledge');
+const minigameText = document.getElementById('minigame-text');
+const minigameSubmit = document.getElementById('minigame-submit');
+const minigameNext = document.getElementById('minigame-next');
+const minigameInput = document.getElementById('minigame-input');
+const minigameControls = document.getElementById('minigame-controls');
+const h1 = document.getElementById('minigame-h1')
+const h2 = document.getElementById('minigame-h2')
+const h3 = document.getElementById('minigame-h3')
+const p = document.getElementById('minigame-p')
 const h1Wu = document.createElement('h1');
 const h2Wu = document.createElement('h2');
 const h3Wu = document.createElement('h3');
@@ -50,9 +48,7 @@ const weaponUpgradeModal = document.getElementById('weapon-upgrade-div');
 const accuracyButton = document.getElementById('accuracy-button');
 const powerButton = document.getElementById('power-button');
 const shieldingButton = document.getElementById('shielding-button');
-let tokenSpan = document.getElementById('upgrade-token-count');
-
-
+const tokenSpan = document.getElementById('upgrade-token-count');
 
 /////////////////
 // GLOBAL VARS //
@@ -64,8 +60,7 @@ class User {
 		this.accuracy = null;
 		this.power = null;
 		this.shielding = null;
-		this.upgradeTokens = null;
-
+		this.upgradeTokens = 0;
 	}
 	gainSanity(num) {
 		this.sanity += num;
@@ -134,7 +129,7 @@ const triviaAnswers = [
 	'graphite'
 ]
 
-const riddles = [
+const riddlesQuestions = [
 	'You cannot keep me until you have given me. What am I?',
 	'What goes all the way around the world but stays in a corner?',
 	'I’m the rare case when today comes before yesterday. What am I?',
@@ -221,9 +216,9 @@ function knowledgeMiniGame() {
 	// setup the DOM
 	modalBkg.style.backgroundColor = 'rgba(17, 0, 71, 0.678)'
 	modalBkg.classList.toggle('hidden');
-	miniGameWindow.classList.toggle('hidden')
+	minigameWindow.classList.toggle('hidden');
+	minigameKnowledge.classList.toggle('hidden');
 
-	
 	const questions = [...triviaQuestions]
 	const answers = [...triviaAnswers]
 	
@@ -233,13 +228,13 @@ function knowledgeMiniGame() {
 	randomChoice = randomNumber(questions.length);
 	h2.innerText = `Question 1`
 	h3.innerText = questions[randomChoice];
-	miniGameSubmit.onclick = () => {
-		miniGameNext.classList.toggle('hidden')
-		miniGameSubmit.classList.toggle('hidden')
-		miniGameInput.classList.toggle('hidden')
+	minigameSubmit.onclick = () => {
+		minigameNext.classList.toggle('hidden')
+		minigameSubmit.classList.toggle('hidden')
+		minigameInput.classList.toggle('hidden')
 		p.innerText = '';
-		let answer = miniGameInput.value.toLowerCase();
-		miniGameInput.value = '';
+		let answer = minigameInput.value.toLowerCase();
+		minigameInput.value = '';
 		if (answer === answers[randomChoice]) {
 			h2.innerText = 'Correct!'
 			correctAnswers++;
@@ -247,23 +242,23 @@ function knowledgeMiniGame() {
 			h2.innerText = 'Incorrect!';
 			user.loseSanity(1);
 		};
-		miniGameNext.onclick = () => {
-			miniGameNext.classList.toggle('hidden')
-			miniGameSubmit.classList.toggle('hidden')
-			miniGameInput.classList.toggle('hidden')	
+		minigameNext.onclick = () => {
+			minigameNext.classList.toggle('hidden')
+			minigameSubmit.classList.toggle('hidden')
+			minigameInput.classList.toggle('hidden')	
 			questions.splice(randomChoice,1);
 			answers.splice(randomChoice,1);
 			console.log('question 2 started')
 			randomChoice = randomNumber(questions.length);
 			h2.innerText = `Question 2`
 			h3.innerText = questions[randomChoice];
-			miniGameSubmit.onclick = () => {
-				miniGameNext.classList.toggle('hidden')
-				miniGameSubmit.classList.toggle('hidden')
-				miniGameInput.classList.toggle('hidden')
+			minigameSubmit.onclick = () => {
+				minigameNext.classList.toggle('hidden')
+				minigameSubmit.classList.toggle('hidden')
+				minigameInput.classList.toggle('hidden')
 				p.innerText = '';
-				answer = miniGameInput.value.toLowerCase();
-				miniGameInput.value = '';
+				answer = minigameInput.value.toLowerCase();
+				minigameInput.value = '';
 				if (answer === answers[randomChoice]) {
 					h2.innerText = 'Correct!'
 					correctAnswers++;
@@ -271,22 +266,22 @@ function knowledgeMiniGame() {
 					h2.innerText = 'Incorrect!';
 					user.loseSanity(1);
 				};
-				miniGameNext.onclick = () => {
-					miniGameNext.classList.toggle('hidden')
-					miniGameSubmit.classList.toggle('hidden')
-					miniGameInput.classList.toggle('hidden')
+				minigameNext.onclick = () => {
+					minigameNext.classList.toggle('hidden')
+					minigameSubmit.classList.toggle('hidden')
+					minigameInput.classList.toggle('hidden')
 					questions.splice(randomChoice,1);
 					answers.splice(randomChoice,1);
 					console.log('question 3 started')
 					h2.innerText = `Question 3`
 					h3.innerText = questions[0];
-					miniGameSubmit.onclick = () => {
-						miniGameNext.classList.toggle('hidden')
-						miniGameSubmit.classList.toggle('hidden')
-						miniGameInput.classList.toggle('hidden')
+					minigameSubmit.onclick = () => {
+						minigameNext.classList.toggle('hidden')
+						minigameSubmit.classList.toggle('hidden')
+						minigameInput.classList.toggle('hidden')
 						p.innerText = '';
-						answer = miniGameInput.value.toLowerCase();
-						miniGameInput.value = '';
+						answer = minigameInput.value.toLowerCase();
+						minigameInput.value = '';
 						if (answer === answers[0]) {
 							h2.innerText = 'Correct!'
 							correctAnswers++;
@@ -294,10 +289,11 @@ function knowledgeMiniGame() {
 							h2.innerText = 'Incorrect!';
 							user.loseSanity(1);
 						}
-						miniGameNext.innerText = `Close`;
-						miniGameNext.onclick = () => {
-							miniGameSubmit.classList.toggle('hidden')
-							miniGameInput.classList.toggle('hidden')
+						minigameNext.innerText = `Close`;
+						minigameNext.onclick = () => {
+							minigameKnowledge.classList.toggle('hidden');
+							minigameWindow.classList.toggle('hidden');
+							modalBkg.classList.toggle('hidden');
 							user.upgradeTokens = correctAnswers;
 							tokenSpan.innerText = user.upgradeTokens;
 							correctAnswers = 0;
@@ -313,10 +309,17 @@ function knowledgeMiniGame() {
 	}
 }
 
-// knowledgeMiniGame()
-
 function weaponUpgrade() {
 	console.log('weapon upgrade began')
+
+	// DOM Setup
+	modalBkg.style.backgroundColor = 'rgba(66, 0, 0, 0.678)';
+	modalBkg.classList.toggle('hidden');
+	minigameWindow.classList.toggle('hidden');
+	weaponUpgradeModal.classList.toggle('hidden');
+	tokenSpan.innerText = user.upgradeTokens;
+	
+	// Module
 	if (user.upgradeTokens) {
 		accuracyButton.onclick = () => {
 			user.upgradeRefractor('accuracy');
@@ -339,6 +342,9 @@ function weaponUpgrade() {
 		shieldingButton.classList.toggle('hidden');
 		powerButton.innerText = 'CLOSE';
 		powerButton.onclick = () => {
+			modalBkg.classList.toggle('hidden');
+			minigameWindow.classList.toggle('hidden');
+			weaponUpgradeModal.classList.toggle('hidden');		
 			storyCounter++
 			rollGame();
 			return console.log('weapon upgraded');
@@ -346,6 +352,70 @@ function weaponUpgrade() {
 	}
 }
 
+function riddleGame() {
+	modalBkg.style.backgroundColor = 'rgba(0, 62, 10, 0.678)';
+	modalBkg.classList.toggle('hidden');
+	minigameWindow.classList.toggle('hidden');
+	minigameKnowledge.classList.toggle('hidden');
+	
+	const riddles = [...riddlesQuestions];
+	const answers = [...riddleAnswers];
+
+	console.log('riddle 1 started')
+	h1.innerText = 'Riddle Me This...';
+	let randomChoice = randomNumber(riddles.length);;
+	h2.innerText = `Riddle 1`
+	h3.innerText = riddles[randomChoice];
+	minigameSubmit.onclick = () => {
+		let answer = minigameInput.value.toLowerCase();
+		minigameInput.value = '';
+		if (answer === answers[randomChoice]) {
+			h2.innerText = 'Correct!'
+			correctAnswers++;
+		};
+		riddles.splice(randomChoice,1);
+		answers.splice(randomChoice,1);
+		console.log('riddle 2 started')
+		randomChoice = randomNumber(riddles.length);
+		h2.innerText = `Riddle 2`
+		h3.innerText = riddles[randomChoice];
+		minigameSubmit.onclick = () => {
+			answer = minigameInput.value.toLowerCase();
+			minigameInput.value = '';
+			if (answer === answers[randomChoice]) {
+				h2.innerText = 'Correct!'
+				correctAnswers++;
+			};
+			riddles.splice(randomChoice,1);
+			answers.splice(randomChoice,1);
+			console.log('riddle 3 started')
+			h2.innerText = `Riddle 3`
+			h3.innerText = riddles[0];
+			minigameSubmit.onclick = () => {
+				minigameNext.classList.toggle('hidden')
+				minigameSubmit.classList.toggle('hidden')
+				minigameInput.classList.toggle('hidden')
+				p.innerText = '';
+				answer = minigameInput.value.toLowerCase();
+				minigameInput.value = '';
+				if (answer === answers[0]) {
+					h2.innerText = 'Correct!'
+					correctAnswers++;
+				};
+				minigameKnowledge.classList.toggle('hidden');
+				minigameWindow.classList.toggle('hidden');
+				modalBkg.classList.toggle('hidden');
+				user.upgradeTokens = correctAnswers;
+				// tokenSpan.innerText = user.upgradeTokens;
+				correctAnswers = 0;
+				storyCounter++
+				console.log('Riddles Game Complete');
+				rollGame();
+				return;
+			}
+		}
+	}
+}
 
 function rollGame() {
 	switch(storyCounter) {
@@ -386,6 +456,7 @@ function rollGame() {
 					break;
 
 		case 5:		console.log('case 5 started');
+					narratorDiv.innerHTML = ''
 					sleep(1000).then(() => { 
 						setImg.src = ''; // ------> MIRROR CRACKED IMAGE FRAME
 						sleep(1000).then(() => { 
@@ -479,8 +550,6 @@ function rollGame() {
 					break;
 
 		case 21:	console.log('case 21 started')
-					knowledgeMiniGameDiv.classList.toggle('hidden')
-					miniGameBkg.classList.toggle('hidden');
 					if (user.upgradeTokens) {
 						narratorDiv.innerHTML = `<h2>You received ${user.upgradeTokens} upgrade tokens for your Refractor.</h2>`
 						dialogueDiv.innerHTML = `<h3>${dialogue[10]}</h3>`
@@ -494,15 +563,11 @@ function rollGame() {
 		case 22:	console.log('case 22 started')
 					dialogueDiv.innerHTML = ''
 					narratorDiv.innerHTML = ''
-					miniGameBkg.style.backgroundColor = 'rgba(66, 0, 0, 0.678)';
-					weaponUpgradeModal.classList.toggle('hidden')
-					miniGameBkg.classList.toggle('hidden');
 					weaponUpgrade();
 					break;
 					// ADD DELAY THEN REVEAL KENDRA POSITION 1
 		case 23:	console.log('case 23 started')
 					weaponUpgradeModal.classList.toggle('hidden')
-					miniGameBkg.classList.toggle('hidden');
 					narratorDiv.innerHTML = `<h2>${narrator[12]}</h2>`
 					break;
 
@@ -519,7 +584,7 @@ function rollGame() {
 
 		case 26:	console.log('case 26 started')
 					dialogueDiv.innerHTML = ''			
-					// MODAL GAME 2 RIDDLER
+					riddleGame();
 					break;
 
 		case 27:	console.log('case 27 started')
@@ -677,6 +742,5 @@ openingModalButton.onclick = () => {
 
 // unComment above and delete below to return to normal intro
 
-setImg.src = 'images/set1.jpg';
-onloadDiv.classList.toggle('hidden');
+introDiv.classList.toggle('hidden');
 rollGame();
