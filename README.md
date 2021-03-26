@@ -2,6 +2,8 @@
 
 Mirror is an adventure game comprised of three minigames and a boss battle.
 
+### Play Link: https://sleeptil3.github.io/Mirror/index.html
+
 ### Game summary:
 One morning you awake feeling groggy. You must not have slept quite right. After you walk to the bathroom to wash your face, you are whisked away to a land of adventure. But something isn't quite right in the Mirrorrealm...
 
