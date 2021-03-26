@@ -23,4 +23,6 @@ Win or lose, the game ends with a closing story.
 ___
 ## Lessons/Ongoing Issues:
 ### CSS
-I'd still like to do more with CSS and animate each instance of dialogue and narration
+- I'd still like to do more with CSS and animate each instance of dialogue and narration
+- Fix issue with Kendra's dialogue that is being manually HTML'd in. its not receiving the CSS properly to look like dialogue - might need changed to H3
+- fix issue with Temis background
