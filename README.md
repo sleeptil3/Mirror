@@ -37,3 +37,4 @@ ___
 - fix bug with Temis background
 - add more knowledge and riddle questions
 - add more reflex game rounds (the original intention was for it to be a simon says style. pop up a specific arrow, then have them repeat as quickly as possible
+- add audio background
