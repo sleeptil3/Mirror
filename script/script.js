@@ -20,12 +20,15 @@ const advanceButton = document.getElementById('advance-button');
 const statsDiv = document.getElementById('stats-div');
 const characterDiv = document.getElementById('character-div');
 const characterImg = document.getElementById('character');
+const mirrorBkg = document.getElementById('mirror-bkg');
+const mirrorWorldImge = document.getElementById('mirrorworld-img');
 
 /// STAT VARS ///
 const sanityStat = document.getElementById('sanity-stat');
 const accuracyStat = document.getElementById('accuracy-stat');
 const powerStat = document.getElementById('power-stat');
 const shieldingStat = document.getElementById('shielding-stat');
+
 
 /// MINI GAME VARS ///
 const modalBkg = document.getElementById('modal-bkg');
@@ -36,6 +39,7 @@ const minigameSubmit = document.getElementById('minigame-submit');
 const minigameNext = document.getElementById('minigame-next');
 const minigameInput = document.getElementById('minigame-input');
 const minigameControls = document.getElementById('minigame-controls');
+const textWarning = document.getElementById('text-warning');
 const h1 = document.getElementById('minigame-h1')
 const h2 = document.getElementById('minigame-h2')
 const h3 = document.getElementById('minigame-h3')
@@ -50,13 +54,43 @@ const powerButton = document.getElementById('power-button');
 const shieldingButton = document.getElementById('shielding-button');
 const tokenSpan = document.getElementById('upgrade-token-count');
 
+/// REFLEX MINI GAME VARS ///
+const startButton = document.createElement('button');
+minigameKnowledge.appendChild(startButton);
+startButton.classList.toggle('hidden');
+let startTime = null;
+let endTime = null;
+let timing = null;
+
+/// FINAL BATTLE VARS ///
+const battleMirror = document.getElementById('battle-mirror');
+const h1Final = document.getElementById('h1-final');
+const h2Final = document.getElementById('h2-final');
+const h3Final = document.getElementById('h3-final');
+const pFinal = document.getElementById('p-final');
+const attackStats = document.getElementById('attack-stats');
+const attackButton = document.getElementById('attack');
+const battleSanityStat = document.getElementById("battle-sanity-stat");
+const battleAccuracyStat = document.getElementById("battle-accuracy-stat");
+const battlePowerStat = document.getElementById("battle-power-stat");
+const battleShieldingStat = document.getElementById("battle-shielding-stat");
+
 /////////////////
 // GLOBAL VARS //
 /////////////////
+let correctAnswers = 0;
+let decisionResult = null;
+let storyCounter = 0;
+let randomHit = null;
+let upgradeDecisions = {
+	accuracy: 0,
+	power: 0,
+	shielding: 0
+};
 
 class User {
 	constructor() {
-		this.sanity = 20;
+		this.sanity = 25;
 		this.accuracy = null;
 		this.power = null;
 		this.shielding = null;
@@ -71,39 +105,52 @@ class User {
 		sanityStat.innerText = this.sanity;
 	}
 	generateRefractor() {
-		this.accuracy = randomNumberRange(45,55);
-		this.power = randomNumberRange(45,55);
-		this.shielding = randomNumberRange(45,55);
+		this.accuracy = randomNumberRange(15,18);
+		this.power = randomNumberRange(15,18);
+		this.shielding = randomNumberRange(10,14);
 		accuracyStat.innerText = this.accuracy;
 		powerStat.innerText = this.power;
 		shieldingStat.innerText = this.shielding;
 	}
 	upgradeRefractor(feature) {
 		switch (feature) {
-			case 'accuracy': 	this.accuracy += 5;
+			case 'accuracy': 	this.accuracy += 1;
 								accuracyStat.innerText = this.accuracy;
 								user.upgradeTokens--
 								break;
-			case 'power':		this.power += 5;
+			case 'power':		this.power += 1;
 								powerStat.innerText = this.power;
 								user.upgradeTokens--
 								break;
-			case 'shielding':	this.shielding += 5;
+			case 'shielding':	this.shielding += 1;
 								shieldingStat.innerText = this.shielding;
 								user.upgradeTokens--
 								break;
 		}
 	}
-	// add an attack function
-	// review space game for accuracy how to
+	attack(opponent) {
+		randomHit = randomNumberRange(0,20);
+		if (randomHit < this.accuracy) {
+			// hit
+			opponent.sanity = opponent.sanity - this.power + (opponent.shielding / 2);
+			console.log(user.sanity);
+			if (opponent.shielding > 4) {
+				opponent.shielding -= 4;
+			} else {
+				opponent.shielding = 0;
+			}
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 }
 
 const user = new User();
 const temis = new User();
+temis.generateRefractor();
 
-let correctAnswers = 0;
-let decisionResult = null;
-let storyCounter = 0;
+
 
 const correctResponses = [
 	'"A lucky guess."',
@@ -156,7 +203,7 @@ const narrator = [
 	"You have received a RefractiveCanon.",
 	"You notice on the side of the device a display panel reading three settings.",
 	"You set out to explore the area, but in this place, you explore with your mind, not your body.",
-	"It didn’t take long to run into another inhabitant of this place. He seemed friendly enought, but there was a darkness about him, like he carried the weight of an unwanted burden.",
+	"It didn’t take long to run into another inhabitant of this place. He seemed friendly enough, but there was a darkness about him, like he carried the weight of an unwanted burden.",
 	"He sounds like a high school teacher I once had.<BR />Feeling that you really should take this opportunity to upgrade your Refractor, you accept the man’s offer.",
 	"Making your way further down into this mirror world, you come across a woman. She looks like she has something urgent.",
 	"You progress further on your journey. As you approach the mirrored gates of a large palace, you come to a pass.",
@@ -188,13 +235,13 @@ const dialogue = [
 	"Okay. Thanks for listening.",
 	"You can't go this way! Not unless you pass my test of speed and skill. Only then will I let you by. I have a special prize for you if you win: an upgrade token for that dingy canon you're carrying. Let's play.",
 	"Congratulations. You may pass. Here is that token I promised you.",
-	`Hey! It's me, Kendra! Remember? Turns out you got VAR of those riddles correct. Take VAR of my Sanity points. You earned it. Thanks again!`,
+	`Hey! It's me, Kendra! Remember? Turns out you got ${correctAnswers} of those riddles correct. Take a one Sanity point from me for each correct answer. You earned it! Thanks again.`,
 	"Welcome to my palace and my realm. I am Temis, ruler of this place.",
 	"I suppose you came here to battle to earn a chance to leave the Mirror Realm. Okay, I will oblige your request, however everything you think you can do, I can do better. I'm smarter. I'm faster. You will NEVER win.",
 	"In fact, all along your pathetic journey here, I followed every decision you made but my path mirrored your own. That is to say, I chose the opposite of what you did each and every time! This is going to be fun!",
 	"Oh, I'm so glad that's over. It's EXHAUSTING pretending to be so mean.",
 	"Look, I'm you and you're me. It's the mirror realm, get it?",
-	"You're stuck in one of your daydreams again. Standing in front of a mirror or not, stop letting the voice in your head paralyze you.",
+	"You're stuck in one of your daydreams again. Standing in front of a mirror or not, stop letting the voice in your head paralyze you.\n\nWAKE UP!",
 ]
 
 ///////////////
@@ -291,11 +338,16 @@ function knowledgeMiniGame() {
 						}
 						minigameNext.innerText = `Close`;
 						minigameNext.onclick = () => {
+							minigameNext.innerText = `Next`;
 							minigameKnowledge.classList.toggle('hidden');
 							minigameWindow.classList.toggle('hidden');
 							modalBkg.classList.toggle('hidden');
 							user.upgradeTokens = correctAnswers;
 							tokenSpan.innerText = user.upgradeTokens;
+							h1.innerText = '';
+							h2.innerText = '';
+							h3.innerText = '';
+							p.innerText = '';
 							correctAnswers = 0;
 							storyCounter++
 							console.log('Knowledge Game Complete');
@@ -310,30 +362,25 @@ function knowledgeMiniGame() {
 }
 
 function weaponUpgrade() {
-	console.log('weapon upgrade began')
-
-	// DOM Setup
-	modalBkg.style.backgroundColor = 'rgba(66, 0, 0, 0.678)';
-	modalBkg.classList.toggle('hidden');
-	minigameWindow.classList.toggle('hidden');
-	weaponUpgradeModal.classList.toggle('hidden');
-	tokenSpan.innerText = user.upgradeTokens;
-	
+	console.log('weapon upgrade began')	
 	// Module
-	if (user.upgradeTokens) {
+	if (user.upgradeTokens > 0) {
 		accuracyButton.onclick = () => {
 			user.upgradeRefractor('accuracy');
-			user.upgradeTokens--;
+			upgradeDecisions.accuracy++;
+			tokenSpan.innerText = user.upgradeTokens;
 			weaponUpgrade()
 		}
 		powerButton.onclick = () => {
 			user.upgradeRefractor('power');
-			user.upgradeTokens--;
+			upgradeDecisions.power++;
+			tokenSpan.innerText = user.upgradeTokens;
 			weaponUpgrade()
 		}
 		shieldingButton.onclick = () => {
 			user.upgradeRefractor('shielding');
-			user.upgradeTokens--;
+			upgradeDecisions.shielding++;
+			tokenSpan.innerText = user.upgradeTokens;	
 			weaponUpgrade()
 		}
 
@@ -344,7 +391,10 @@ function weaponUpgrade() {
 		powerButton.onclick = () => {
 			modalBkg.classList.toggle('hidden');
 			minigameWindow.classList.toggle('hidden');
-			weaponUpgradeModal.classList.toggle('hidden');		
+			weaponUpgradeModal.classList.toggle('hidden');	
+			accuracyButton.classList.toggle('hidden');
+			shieldingButton.classList.toggle('hidden');
+			powerButton.innerText = 'POWER';		
 			storyCounter++
 			rollGame();
 			return console.log('weapon upgraded');
@@ -357,6 +407,10 @@ function riddleGame() {
 	modalBkg.classList.toggle('hidden');
 	minigameWindow.classList.toggle('hidden');
 	minigameKnowledge.classList.toggle('hidden');
+	minigameInput.classList.toggle('hidden');
+	minigameSubmit.classList.toggle('hidden');
+	minigameNext.classList.toggle('hidden');
+
 	
 	const riddles = [...riddlesQuestions];
 	const answers = [...riddleAnswers];
@@ -404,14 +458,164 @@ function riddleGame() {
 				};
 				minigameKnowledge.classList.toggle('hidden');
 				minigameWindow.classList.toggle('hidden');
+				minigameControls.classList.toggle('hidden');	
+				minigameNext.classList.toggle('hidden');
+				textWarning.classList.toggle('hidden');
 				modalBkg.classList.toggle('hidden');
-				user.upgradeTokens = correctAnswers;
-				// tokenSpan.innerText = user.upgradeTokens;
-				correctAnswers = 0;
+				h1.innerText = '';
+				h2.innerText = '';
+				h3.innerText = '';
+				p.innerText = '';
 				storyCounter++
 				console.log('Riddles Game Complete');
+				console.log(`Correct answers: ${correctAnswers}`);
 				rollGame();
 				return;
+			}
+		}
+	}
+}
+
+function reflexSetup() {
+	modalBkg.style.backgroundColor = 'rgba(62, 37, 0, 0.678)';
+	modalBkg.classList.toggle('hidden');
+	minigameWindow.classList.toggle('hidden');
+	minigameKnowledge.classList.toggle('hidden');
+	minigameControls.classList.toggle('hidden');
+	reflexMinigame();
+}
+
+function reflexMinigame() {
+	h1.innerText = "Can you beat this?";
+	h2.innerText = 'This game will test how fast your reflexes are...';
+	p.innerText = 'When you click start, shortly after the screen will change to green. When that happens, press the Space Bar once as fast as you can after that. If you are successful, you win! A successful time is less than a quarter second.';
+	startButton.innerText = 'Start';
+	startButton.classList.toggle('hidden');
+	startButton.onclick = () => {
+		p.innerText = '';
+		startButton.classList.toggle('hidden');
+		h3.innerText = 'Get ready...'
+		sleep(3000).then(() => {
+			minigameWindow.style.backgroundColor = 'green';
+			startTime = new Date();
+			document.body.onkeydown = (e) => {
+				minigameWindow.style.backgroundColor = 'white';
+				endTime = new Date();
+				timing = ((endTime - startTime)/1000).toFixed(2);
+				console.log(timing);
+				if (timing <= .25){
+					console.log('you win');
+					h2.innerText = 'You Win!'
+					h3.innerText = 'Congratulations!';
+					document.body.onkeydown = null;
+					startButton.innerText = 'Close';
+					startButton.classList.toggle('hidden');
+					startButton.onclick = () => {
+						reflexSetup();
+						user.upgradeTokens++;
+						storyCounter++;
+						rollGame();
+					}
+				} else {
+					console.log('you lose');
+					h2.innerText = 'Try Again'
+					h3.innerText = '';
+					document.body.onkeydown = null;
+					startButton.innerText = 'Restart';
+					startButton.classList.toggle('hidden');
+					startButton.onclick = () => {
+						startButton.classList.toggle('hidden');
+						reflexMinigame();
+					}
+				}
+			}
+		});	
+	}
+}
+
+function finalBattleSetup() {
+	modalBkg.style.backgroundColor = 'rgba(12, 0, 0, 0.678)';
+	modalBkg.classList.toggle('hidden');
+	battleMirror.classList.toggle('hidden');
+	h1Final.innerText = 'Temis Battle';
+	h2Final.innerText = 'Test your skills against your opposite!';
+	h3Final.innerText = 'Temis made all of the opposite upgrade choices as you progressed in your adventure! Now, see who will win in a classic turn-based battle!';
+	battleSanityStat.innerText = user.sanity;
+	battlePowerStat.innerText = user.power;
+	battleAccuracyStat.innerText = user.accuracy;
+	battleShieldingStat.innerText = user.shielding;
+	attackButton.onclick = () => {
+		h1Final.innerText = '';
+		h2Final.innerText = '';
+		h3Final.innerText = '';
+		finalBattle()
+	}
+}
+
+function finalBattle(){
+	h1Final.innerText = 'FIGHT!';
+	h2Final.innerText = 'Click ATTACK to FIRE your REFRACTOR!';
+	h3Final.innerText = '• the accuracy of your weapon will indicate the chances that your attack will succeed •\n• power indicates how much damage you will do if the attack lands •\n• shielding indicates the buffer you have against Temis\'s attack when it\'s their turn! •';
+	attackButton.innerText = 'ATTACK!'
+	attackButton.onclick = () => {
+		if (user.attack(temis)) {
+			h2Final.innerText = 'Your attack on Temis was successful!'
+			h3Final.innerText = 'Sheilds up, attack from Temis imminent!'
+		} else {
+			h2Final.innerText = 'Your attack on Temis was NOT successful!'
+			h3Final.innerText = 'Sheilds up, attack from Temis imminent!'
+		};
+		battleSanityStat.innerText = user.sanity;
+		battlePowerStat.innerText = user.power;
+		battleAccuracyStat.innerText = user.accuracy;
+		battleShieldingStat.innerText = user.shielding;	
+		attackButton.innerText = 'Shields Up!';
+		attackButton.onclick = () => {
+			if (user.sanity > 0 && temis.sanity > 0) {
+				if (temis.attack(user)) {
+					h2Final.innerText = 'Uh oh, Temis\' attack was successful!'
+					h3Final.innerText = 'Try and attack again!'
+				} else {
+					h2Final.innerText = 'Temis\' attack was NOT successful!'
+					h3Final.innerText = 'Try and attack again!'
+				}
+				attackButton.innerText = 'Prepare to Attack';
+				battleSanityStat.innerText = user.sanity;
+				battlePowerStat.innerText = user.power;
+				battleAccuracyStat.innerText = user.accuracy;
+				battleShieldingStat.innerText = user.shielding;
+			
+				attackButton.onclick = finalBattle;
+			} else if (temis.sanity <= 0) {
+				attackStats.classList.toggle('hidden');
+				h1Final.innerText = 'You won!'
+				h2Final.innerText = 'You have defeated Temis, the ruler of MirrorRealm!'
+				h3Final.innerText = ''
+				attackButton.innerText = 'Close';
+				attackButton.onclick = () => {
+					modalBkg.classList.toggle('hidden');
+					battleMirror.classList.toggle('hidden');
+					h1Final.innerText = '';
+					h2Final.innerText = '';
+					h3Final.innerText = '';
+					storyCounter++
+					rollGame();
+				}
+			} else if (user.sanity <= 0) {
+				attackStats.classList.toggle('hidden');
+				h1Final.innerText = 'You lost!';
+				h2Final.innerText = 'You have been defeated by Temis, the ruler of MirrorRealm!\nYou are doomed to roam this world for eternity!';
+				h3Final.innerText = '';
+				attackButton.innerText = 'Close';
+				attackButton.onclick = () => {
+					modalBkg.classList.toggle('hidden');
+					battleMirror.classList.toggle('hidden');
+					h1Final.innerText = '';
+					h2Final.innerText = '';
+					h3Final.innerText = '';
+					storyCounter++
+					rollGame();
+				}
 			}
 		}
 	}
@@ -420,6 +624,7 @@ function riddleGame() {
 function rollGame() {
 	switch(storyCounter) {
 		case 0:		console.log('case 0 started');
+					document.getElementById('opening-modal').classList.toggle('hidden');
 					openingModalDiv.innerHTML = `<h2>${narrator[0]}</h2>`;
 					break;
 
@@ -435,9 +640,8 @@ function rollGame() {
 					openingModalDiv.innerHTML = `<h2>${narrator[3]}</h2>`
 					openingModalButton.onclick = () => {
 						document.getElementById('opening-modal').classList.toggle('fade-out');
-						// set image to bathroom set
 						sleep(1000).then(() => { 
-							setImg.src = ('');
+							setImg.src = 'images/set-bath.png';
 							mirrorMain.classList.toggle('fade-in');
 							mirrorMain.classList.toggle('hidden');
 							document.getElementById('opening-modal').classList.toggle('hidden');
@@ -448,6 +652,7 @@ function rollGame() {
 					break;
 
 		case 4:		console.log('case 4 started')
+					narratorDiv.style.color = 'black';
 					narratorDiv.innerHTML = `<h2>${narrator[4]}</h2>`
 					advanceButton.onclick = () => {
 						storyCounter++;
@@ -457,21 +662,25 @@ function rollGame() {
 
 		case 5:		console.log('case 5 started');
 					narratorDiv.innerHTML = ''
+					narratorDiv.style.color = 'white';
 					sleep(1000).then(() => { 
-						setImg.src = ''; // ------> MIRROR CRACKED IMAGE FRAME
-						sleep(1000).then(() => { 
-							mirrorWorldSection.style.backgroundColor = "pink"; // ------> MIRRORWORLD
-						});
+						mirrorBkg.src = 'images/mirror-broken.png'
 					});
 					break;
 
 		case 6:		console.log('case 6 started');
 					narratorDiv.innerHTML = `<h2>${narrator[5]}</h2>`;
+					sleep(1000).then(() => { 
+						mirrorBkg.classList.toggle('fade-out')
+						mirrorBkg.classList.toggle('fade-out')
+						mirrorBkg.src = 'images/mirrorworld1.png'
+						mirrorBkg.classList.toggle('fade-in')
+					});
 					break;
 
 		case 7:		console.log('case 7 started')
 					narratorDiv.innerHTML = `<h2>${narrator[6]}</h2>`
-					characterImg.setAttribute('src', 'images/chartemp.png');
+					characterImg.setAttribute('src', 'images/disheveled.png');
 					characterImg.classList.toggle('fade-in');
 					characterImg.classList.toggle('hidden');
 					break;
@@ -527,6 +736,7 @@ function rollGame() {
 					// change char img to kristoff speaking
 		case 16:	console.log('case 16 started')
 					narratorDiv.innerHTML = ''
+					characterImg.src = 'images/kristoff.png';
 					dialogueDiv.innerHTML = `<h3>${dialogue[7]}</h3>`
 					break;
 
@@ -557,24 +767,32 @@ function rollGame() {
 						narratorDiv.innerHTML = `<h2>You lost ${20-user.sanity} Sanity.</h2>`
 						dialogueDiv.innerHTML = `<h3>Yikes, you better brush up on your knowledge, kid.</h3>`
 					}
+					
 					break;
 
 					// hide charimg and change to KENDRA
 		case 22:	console.log('case 22 started')
 					dialogueDiv.innerHTML = ''
 					narratorDiv.innerHTML = ''
+					// DOM Setup
+					modalBkg.style.backgroundColor = 'rgba(66, 0, 0, 0.678)';
+					modalBkg.classList.toggle('hidden');
+					minigameWindow.classList.toggle('hidden');
+					weaponUpgradeModal.classList.toggle('hidden');
+					tokenSpan.innerText = user.upgradeTokens;
 					weaponUpgrade();
+					characterImg.src = '';
 					break;
 					// ADD DELAY THEN REVEAL KENDRA POSITION 1
+
 		case 23:	console.log('case 23 started')
-					weaponUpgradeModal.classList.toggle('hidden')
 					narratorDiv.innerHTML = `<h2>${narrator[12]}</h2>`
 					break;
 
 					// FADE OUT KENDRA 1 AND IN KENDRA SPEAKING
 		case 24:	console.log('case 24 started')
 					narratorDiv.innerHTML = ''
-					characterImg.setAttribute('src', 'images/chartemp.png')
+					characterImg.src = 'images/kendra.png';
 					dialogueDiv.innerHTML = `<h3>${dialogue[11]}</h3>`
 					break;
 
@@ -588,19 +806,27 @@ function rollGame() {
 					break;
 
 		case 27:	console.log('case 27 started')
-					dialogueDiv.innerHTML = `<h3>${dialogue[13]}</h3>`
+					dialogueDiv.innerHTML = `<h3>${dialogue[13]}</h3>`;
+
 					break;
 
 					// FADE OUT KENDRA
 		case 28:	console.log('case 28 started')
 					dialogueDiv.innerHTML = ''
-					narratorDiv.innerHTML = `<h2>You gained one point of sanity for helping Kendra.</h2><br /><h2>Kendra gave you an upgrade token.</h2>`
+					narratorDiv.innerHTML = `<h2>You gained one point of sanity for helping Kendra.</h2><br /><h2>Kendra gave you an upgrade token.</h2>`;
+					user.upgradeTokens++;
 					break;
 
 		case 29:	console.log('case 29 started')
-					// WEAPON UPGRADE MODAL IF YOU HELPED KENDRA
-					// incrementing story counter to skip case 30 for now, add back if you make kendra optional later - would need to change kendras fade out on 28
-					storyCounter++;
+					dialogueDiv.innerHTML = ''
+					narratorDiv.innerHTML = ''
+					// DOM Setup
+					modalBkg.style.backgroundColor = 'rgba(66, 0, 0, 0.678)';
+					modalBkg.classList.toggle('hidden');
+					minigameWindow.classList.toggle('hidden');
+					weaponUpgradeModal.classList.toggle('hidden');
+					tokenSpan.innerText = user.upgradeTokens;
+					weaponUpgrade();
 					break;
 
 		case 30:	console.log('case 30 started')
@@ -608,23 +834,32 @@ function rollGame() {
 					break;
 
 		case 31:	console.log('case 31 started')
+					characterImg.src = '';
 					narratorDiv.innerHTML = `<h2>${narrator[13]}</h2>`
+					dialogueDiv.innerHTML = ``
 					break;
 
 					// MIRRORWORLD IMAGE CHANGE - path, with castle in bkg
 		case 32:	console.log('case 32 started')
 					narratorDiv.innerHTML = `<h2>${narrator[14]}</h2>`
+					mirrorBkg.classList.toggle('fade-out')
+					sleep(500).then(() => { 
+						mirrorBkg.classList.toggle('fade-out')
+						mirrorBkg.src = 'images/mirrorworld-castle.png'
+						mirrorBkg.classList.toggle('fade-in')
+					});
 					break;
 
 					// BRING IN CHAR OF BRIDGE GUY
 		case 33:	console.log('case 33 started')
 					narratorDiv.innerHTML = ''
 					dialogueDiv.innerHTML = `<h3>${dialogue[15]}</h3>`
+					characterImg.src = 'images/passman.png'
 					break;
 
 		case 34:	console.log('case 34 started')
 					dialogueDiv.innerHTML = ''
-					// GAME 3 MODAL - REFLEXES
+					reflexSetup();
 					break;
 
 		case 35:	console.log('case 35 started')
@@ -639,7 +874,14 @@ function rollGame() {
 					// FADE OUT CHAR OF BRIDGE GUY, CHANGE TO KENDRA
 		case 37:	console.log('case 37 started')
 					narratorDiv.innerHTML = ''
-					// WEAPON UPGRADE MODAL
+					// DOM Setup
+					modalBkg.style.backgroundColor = 'rgba(66, 0, 0, 0.678)';
+					modalBkg.classList.toggle('hidden');
+					minigameWindow.classList.toggle('hidden');
+					weaponUpgradeModal.classList.toggle('hidden');
+					tokenSpan.innerText = user.upgradeTokens;
+					characterImg.src = '';
+					weaponUpgrade();
 					break;
 
 		case 38:	console.log('case 38 started')
@@ -648,12 +890,17 @@ function rollGame() {
 
 					//CHAR IMAGE OF KENDRA
 		case 39:	console.log('case 39 started')
+					characterImg.src = 'images/kendra.png'
 					narratorDiv.innerHTML = ''
-					dialogueDiv.innerHTML = `<h3>${dialogue[17]}</h3>`
+					dialogueDiv.innerHTML = `<h2>Hey! It's me, Kendra! Remember? Turns out you got ${correctAnswers} of those riddles correct. Take a one Sanity point from me for each correct answer. You earned it! Thanks again.
+					</h2>`;
+					user.sanity += correctAnswers;
+					sanityStat.innerText = user.sanity;
 					break;
 
 					// FADE OUT CHAR KENDRA, CHANGE TO TEMIS FAR
 		case 40:	console.log('case 40 started')
+					characterImg.src = '';
 					dialogueDiv.innerHTML = ''
 					narratorDiv.innerHTML = `<h2>${narrator[16]}</h2>`
 					break;
@@ -665,6 +912,7 @@ function rollGame() {
 
 					// CHAR IMAGE OF TEMIS SPEAKING SHOULD BE UP
 		case 42:	console.log('case 42 started')
+					characterImg.src = 'images/temis.png'
 					narratorDiv.innerHTML = ''
 					dialogueDiv.innerHTML = `<h3>${dialogue[18]}</h3>`
 					break;
@@ -690,7 +938,7 @@ function rollGame() {
 
 		case 47:	console.log('case 47 started')
 					narratorDiv.innerHTML = ''
-					// BOSS BATTLE SUPER MODAL
+					finalBattleSetup();
 					break;
 
 		case 48:	console.log('case 48 started')
@@ -727,20 +975,20 @@ openingModalButton.onclick = () => {
 	rollGame();
 };
 
-// window.onload = () => {
-// 	setImg.src = 'images/set1.jpg';
-// 	console.log('setup complete');
-// 	document.getElementById('play').onclick = () => {
-// 		console.log('play clicked');
-// 		onloadDiv.classList.toggle('fade-out-intro')
-// 		setTimeout( () => {
-// 			onloadDiv.classList.toggle('hidden');
-// 			rollGame();
-// 		 }, 3000);
-// 	};
-// }
+window.onload = () => {
+	setImg.src = 'images/set1.jpg';
+	console.log('setup complete');
+	document.getElementById('play').onclick = () => {
+		console.log('play clicked');
+		introDiv.classList.toggle('fade-out-intro')
+		setTimeout( () => {
+			introDiv.classList.toggle('hidden');
+			rollGame();
+		 }, 3000);
+	};
+}
 
 // unComment above and delete below to return to normal intro
 
-introDiv.classList.toggle('hidden');
-rollGame();
+// introDiv.classList.toggle('hidden');
+// rollGame();
