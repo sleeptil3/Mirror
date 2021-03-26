@@ -1,6 +1,6 @@
 # Mirror
 
-Mirror is an adventure game comprise of three minigames and a boss battle.
+Mirror is an adventure game comprised of three minigames and a boss battle.
 
 ### Game summary:
 One morning you awake feeling groggy. You must not have slept quite right. After you walk to the bathroom to wash your face, you are whisked away to a land of adventure. But something isn't quite right in the Mirrorrealm...
