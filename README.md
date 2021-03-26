@@ -19,9 +19,17 @@ The user faces off against Temis, the ruler of the Mirrorrealm.
 Win or lose, the game ends with a closing story.
 
 ### Technologies used:
-- HTML
-- CSS: Grid, Flexbox, modals, animations
-- JavaScript: loops, math methods/randomization, array methods, combined datatypes, click event listeners, functions, manipulating DOM, data management via arrays and Class/instances
+JavaScript
+78.8%
+ 
+SCSS
+12.3%
+ 
+HTML
+8.9%
+- HTML 9%
+- SCSS 12%: Grid, Flexbox, modals, animations
+- JavaScript 79%: loops, math methods/randomization, array methods, combined datatypes, click event listeners, functions, timed functions, manipulating DOM, data management via arrays and Class/instances
 ___
 ## Lessons/Ongoing Issues:
 ### CSS
