@@ -31,10 +31,10 @@ HTML
 - SCSS 12%: Grid, Flexbox, modals, animations
 - JavaScript 79%: loops, math methods/randomization, array methods, combined datatypes, click event listeners, functions, timed functions, manipulating DOM, data management via arrays and Class/instances
 ___
-## Lessons/Ongoing Issues:
-- I'd still like to do more with CSS and animate each instance of dialogue and narration
-- Fix bug with Kendra's dialogue that is being manually HTML'd in. its not receiving the CSS properly to look like dialogue - might need changed to H3
+## Bugs & Future Additions:
+- animate each instance of dialogue and narration
 - fix bug with Temis background
 - add more knowledge and riddle questions
 - add more reflex game rounds (the original intention was for it to be a simon says style. pop up a specific arrow, then have them repeat as quickly as possible
 - add audio background
+- add 'Play Again' option to ending
